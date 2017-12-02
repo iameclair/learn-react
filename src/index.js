@@ -1,15 +1,22 @@
+/*writing the first component from scratch*/
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
+import SearchBar from './components/searchbar';
+import {YOUTUBE_API} from './config/config'
 
-import App from './components/app';
-import reducers from './reducers';
+/*this is an API key*/
+const API_KEY = YOUTUBE_API.api_key;
 
-const createStoreWithMiddleware = applyMiddleware()(createStore);
 
-ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <App />
-  </Provider>
-  , document.querySelector('.container'));
+const App = () => {
+  /*const declares a final variable or a constant*/
+  return (
+    <div>
+      <SearchBar/>
+    </div>
+  )
+    /*JSX looks like html but cannot be interpreted by the browser but it is transformed into js*/
+};
+
+/*generate html and put it in the dom*/
+ReactDOM.render(<App/>, document.querySelector('.container'));

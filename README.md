@@ -23,3 +23,4 @@ Click [here](https://github.com/StephenGrider/ReactStarter/releases) then downlo
 > npm install
 > npm start
 ```
+# Learn-React and Redux This repository contains all the exrecises and proejcets for learning react

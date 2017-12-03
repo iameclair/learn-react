@@ -1,22 +1,52 @@
-/*writing the first component from scratch*/
-import React from 'react';
+import React, {Component} from 'react';
+import _ from 'lodash';
 import ReactDOM from 'react-dom';
 import SearchBar from './components/searchbar';
-import {YOUTUBE_API} from './config/config'
+import VideoList from './components/video_list';
+import VideoDetail from './components/video_detail'
+import {YOUTUBE_API} from './config/config';
+import YTSearch from 'youtube-api-search';
 
-/*this is an API key*/
 const API_KEY = YOUTUBE_API.api_key;
 
+class App extends Component{
+    constructor(props){
+        super(props);
 
-const App = () => {
-  /*const declares a final variable or a constant*/
-  return (
-    <div>
-      <SearchBar/>
-    </div>
-  )
-    /*JSX looks like html but cannot be interpreted by the browser but it is transformed into js*/
-};
+        this.state = {
+            videos: [],
+            selectedVideo: null
+        };
 
-/*generate html and put it in the dom*/
+        this.videoSearch('mind control');
+    }
+
+    videoSearch(term){
+        YTSearch({key: API_KEY, term: term}, (videos) => {
+            this.setState({
+                videos: videos,
+                selectedVideo: videos[0]
+            });
+        });
+    }
+
+    render(){
+
+      const videoSearch = _.debounce((term) => {
+          this.videoSearch(term)
+      }, 300);
+
+      return (
+          <div>
+             <SearchBar onSearchTermChange = {videoSearch}/>
+             <VideoDetail video={this.state.selectedVideo}/>
+             <VideoList
+                 onVideoSelect={selectedVideo => this.setState({selectedVideo})}
+                 videos={this.state.videos}/>
+          </div>
+      )
+    };
+}
+
+
 ReactDOM.render(<App/>, document.querySelector('.container'));
